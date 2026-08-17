@@ -1,6 +1,6 @@
 ---
 name: learning-issue-ppt
-description: Create or update PowerPoint learning issue records from GPT Q&A, debugging conversations, solved study problems, or technical troubleshooting notes. Use when the user wants a PPT/PPTX draft that summarizes a learning problem, preserves screenshot placeholders, records multiple candidate causes and attempts, splits dense content across slides, maintains navigation/index slides for long-term decks, and adds a red bold Finish slide at the end of each issue.
+description: Create or update PowerPoint learning issue records from GPT Q&A, debugging conversations, solved study problems, or technical troubleshooting notes. Use when the user wants a PPT/PPTX draft that summarizes a learning problem, preserves screenshot placeholders, records multiple candidate causes and attempts, splits dense content across slides, lets the user choose the PPTX output path, maintains navigation/index slides for long-term decks, and adds a red bold Finish slide at the end of each issue.
 ---
 
 # Learning Issue PPT
@@ -174,6 +174,31 @@ Table of contents format:
 Each issue should start after the previous issue's Finish slide.
 
 Do not list Finish slides as separate issues in the table of contents.
+
+## Output Path
+
+Before creating a PPTX, determine the final output path.
+
+Priority:
+
+1. Use the exact output path provided by the user.
+2. If the user provides only a directory, create a clear filename in that directory.
+3. If the user does not provide a path, ask where to save the PPTX before authoring the deck.
+4. Use a default output location only when the user explicitly says to use the default or does not care.
+
+Recommended filename format:
+
+```text
+learning-issue-YYYY-MM-DD-topic.pptx
+```
+
+For monthly long-term decks:
+
+```text
+YYYY-MM-learning-issues.pptx
+```
+
+Never silently save the final PPTX to a temporary directory when the user expects to choose a location.
 
 ## Writing Style
 
