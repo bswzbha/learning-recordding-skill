@@ -177,14 +177,23 @@ Do not list Finish slides as separate issues in the table of contents.
 
 ## Output Path
 
-Before creating a PPTX, determine the final output path.
+Before creating a PPTX, determine the final output path with a file picker when possible.
 
 Priority:
 
 1. Use the exact output path provided by the user.
 2. If the user provides only a directory, create a clear filename in that directory.
-3. If the user does not provide a path, ask where to save the PPTX before authoring the deck.
-4. Use a default output location only when the user explicitly says to use the default or does not care.
+3. If the user does not provide a path, open a system save-file dialog so the user can choose the folder and filename.
+4. If a system dialog is unavailable, blocked, or running in a non-GUI environment, ask the user to type the full output path.
+5. Use a default output location only when the user explicitly says to use the default or does not care.
+
+File picker requirements:
+
+- Use a save-file dialog, not an open-file dialog.
+- Filter or default the extension to `.pptx`.
+- Suggest a clear default filename before showing the dialog.
+- Treat canceling the dialog as "no path chosen" and ask the user for the path manually.
+- Do not create the PPTX until a final path has been chosen.
 
 Recommended filename format:
 
