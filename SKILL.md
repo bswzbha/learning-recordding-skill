@@ -1,13 +1,13 @@
 ---
 name: learning-issue-ppt
-description: Create or update PowerPoint learning issue records from GPT Q&A, debugging conversations, solved study problems, or technical troubleshooting notes. Use when the user wants a PPT/PPTX draft that summarizes a learning problem, preserves screenshot placeholders, records multiple candidate causes and attempts, splits dense content across slides, lets the user choose the PPTX output path, maintains navigation/index slides for long-term decks, and adds a red bold Finish slide at the end of each issue.
+description: Create or update PowerPoint learning issue records from GPT Q&A, debugging conversations, solved study problems, or technical troubleshooting notes. Use when the user wants a PPT/PPTX draft that summarizes a learning problem, uses screenshot-first overview slides, preserves screenshot placeholders, records multiple candidate causes and attempts, splits dense content across slides, lets the user choose the PPTX output path, maintains clickable outline/index slides, and adds a red bold Finish slide at the end of each issue.
 ---
 
 # Learning Issue PPT
 
 ## Purpose
 
-Turn a solved learning problem or GPT Q&A into a PowerPoint learning record. Optimize for later review, not live presentation: keep visible slide text concise, reserve clear space for pasted screenshots, and put detailed reasoning in speaker notes.
+Turn a solved learning problem or GPT Q&A into a PowerPoint learning record. Optimize for later review, not live presentation: make screenshots the main memory cue, keep visible text very concise, and put detailed reasoning in speaker notes.
 
 ## Output Shape
 
@@ -16,29 +16,28 @@ Create one issue as a small slide group. Do not force one issue onto one slide.
 Default slide group:
 
 1. Issue overview
-2. Screenshot placeholder
-3. Cause analysis
-4. Solution
-5. Lessons learned
-6. Finish
+2. Cause analysis
+3. Solution
+4. Lessons learned
+5. Finish
 
 Split slides when content is dense, screenshots are large, or code/config is too long. Typical expanded group:
 
 1. Issue overview
-2. Original screenshot placeholder
-3. Key screenshot/zoom placeholder
-4. Cause analysis
-5. Solution steps
-6. Key code/config
-7. Lessons learned
-8. Finish
+2. Key screenshot/zoom placeholder
+3. Cause analysis
+4. Solution steps
+5. Key code/config
+6. Lessons learned
+7. Finish
 
 ## Slide Rules
 
 - Use one main idea per slide.
-- Keep visible text short and reviewable.
+- Keep visible text short and reviewable; screenshots should carry most of the recall burden.
 - Put detailed explanation, discarded attempts, and expanded reasoning in speaker notes.
-- Leave screenshot pages mostly empty so the user can paste screenshots manually.
+- Put the primary screenshot placeholder on the first issue overview slide under the title.
+- Leave screenshot areas large so the user can paste screenshots manually.
 - Use separate slides for large screenshots.
 - Use additional screenshot slides for long screenshots, zoomed error regions, before/after screenshots, or multiple relevant UI states.
 - Never shrink screenshots into unreadable thumbnails just to fit text.
@@ -47,16 +46,39 @@ Split slides when content is dense, screenshots are large, or code/config is too
 
 ## Issue Overview Slide
 
-Include:
+The first slide of every issue must be screenshot-first.
 
-- Issue number and title
-- One-sentence summary
-- Technology stack or topic
-- Status such as `Solved`, `Draft`, or `Needs review`
-- Final cause in one short sentence
-- Final solution in one short sentence
+Required layout:
 
-Avoid long background paragraphs on the overview slide.
+1. Top: issue title
+2. Middle: large screenshot placeholder
+3. Bottom: minimal phenomenon and conclusion text
+4. Footer: compact issue navigation label linked back to the table of contents
+
+Title requirements:
+
+- Font size: 48 pt
+- Weight: bold
+- Color: red
+- Content: the actual problem title, for example `Fluent 读取 .msh 后无反应并报 invalid grid`
+
+Do not add a top-left label such as `学习问题记录`.
+
+Bottom text requirements:
+
+- Keep text under the screenshot, not above it.
+- Include only the shortest useful `Phenomenon` and `Conclusion`.
+- Use 1-3 short lines total when possible.
+- Do not use large text cards on the overview slide unless the screenshot area still remains dominant.
+
+Example:
+
+```text
+Phenomenon: Importing Case1.msh shows no UI change; Check reports invalid grid.
+Conclusion: The file opens, but it is not a valid Fluent fluid-domain mesh.
+```
+
+Avoid long background paragraphs on the overview slide. Move details to later slides or speaker notes.
 
 ## Screenshot Slides
 
@@ -75,6 +97,8 @@ Paste original error screenshot here
 Paste key error region screenshot here
 Paste fixed result screenshot here
 ```
+
+If there is only one main screenshot, place it on the first issue overview slide. Create extra screenshot slides only for zoomed error regions, long screenshots, before/after evidence, or multiple important UI states.
 
 ## Cause Analysis Slide
 
@@ -156,12 +180,15 @@ Do not add title, footer, navigation, issue number, page number, notes, or decor
 
 ## Long-Term Deck Navigation
 
-When creating or updating a deck containing multiple issues, maintain:
+When creating or updating a deck containing one or more issues, maintain a clickable outline.
 
-- Cover page
-- Table of contents by issue number
-- Category index by topic/technology
-- Recent additions page
+Required navigation slides:
+
+- Table of contents / outline page
+- Category index by topic/technology when there are multiple topics
+- Recent additions page when updating a long-term deck
+
+The table of contents must exist even when the deck has only one issue.
 
 Table of contents format:
 
@@ -170,6 +197,14 @@ Table of contents format:
 002 Git push rejected                     Git         Solved
 003 SQL JOIN duplicate rows               SQL         Draft
 ```
+
+Hyperlink requirements:
+
+- Each issue row in the table of contents must link to that issue's overview slide.
+- Each issue overview slide must include a compact footer label such as `Issue 001 | Fluent / ICEM mesh import`.
+- The footer issue label must hyperlink back to the table of contents.
+- The hyperlink target must be the actual table-of-contents slide, not a placeholder or missing slide.
+- Verify links after generation when the presentation tooling supports link inspection.
 
 Each issue should start after the previous issue's Finish slide.
 
